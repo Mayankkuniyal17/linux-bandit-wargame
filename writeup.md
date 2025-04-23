@@ -1,31 +1,105 @@
-Bandit Wargame Writeup
-A level-by-level walkthrough of the Bandit wargame from OverTheWire.
-Level 0 ➜ Level 1
-Goal: SSH into the remote machine using the provided credentials.
+OverTheWire: Bandit, Level 0-3 Write-up
+======================================
 
-Username: bandit0Password: bandit0Port: 2220
+Table of Contents
+-----------------
+- [Bandit Level 00](#bandit-level-00)
+- [Bandit Level 01](#bandit-level-01)
+- [Bandit Level 02](#bandit-level-02)
+- [Bandit Level 03](#bandit-level-03)
 
-Command Used:
-ssh bandit0@bandit.labs.overthewire.org -p 2220
+Bandit Level 00
+----------------
 
-What Happened: Logged into the Bandit server using SSH. The custom port -p 2220 is used instead of default 22.
+### Problem Description:
+Level 0 is a welcome gift to get you started with the real difficulties.
 
-Real World Parallel: Like accessing a private server with non-standard SSH port (used in security setups or CTFs).
+# Solution & Explanation:
+To begin, you must understand how to use the secure shell (SSH) protocol to connect to the bandit.labs.overthewire.org server. If you're using Linux, you may access the server by running the following command:
 
-Level 1 ➜ Level 2
-Goal: Read a file named - located in the home directory.
 
-Command Used:
-cat ./-
+sasha@SecurityBox:~$ ssh bandit.labs.overthewire.org -l bandit0 -p 2220
 
-Why This Works:Normally, cat - tries to read from stdin. But using ./- tells the shell that - is a filename in the current directory.
-Real World Parallel: In penetration testing or sysadmin work, filenames can be created to confuse tools or break scripts.
 
-Level 2 ➜ Level 3
-Goal: Find the password stored in a file with spaces in its name.
+If you're using Windows, though, you won't find an SSH client by default. While there are several great SSH clients available for use in Windows environments, I recommend PuTTY since it is straightforward and relatively compact.
 
-Command Used:
-cat "spaces in this filename"
+Once connected, you will access the bandit0 shell.
 
-Why This Works: Wrapping the filename in quotes prevents the shell from treating the spaces as separate arguments.
-Real World Parallel: Attackers or sysadmins may create confusing filenames to obfuscate files.
+---
+
+Bandit Level 01
+---------------
+
+Problem Description:
+At this level, you are tasked with finding a file named `readme` in the current directory. The password for the next level is hidden inside this file.
+
+Solution & Explanation:
+This level is quite simple. The task is to read the contents of a file named `readme`. To do this, we can use the `cat` command to display the content of the file.
+
+- Run the following command to list the files in the directory:
+
+bandit0@bandit:~$ ls readme
+
+
+- Now, use `cat` to read the content of the file:
+
+bandit0@bandit:~$ cat readme boJ9jbbUNNfktd78OOpsqOltutMc3MY1
+
+
+The password for the next level (Level 2) is:
+
+boJ9jbbUNNfktd78OOpsqOltutMc3MY1
+
+
+---
+
+Bandit Level 02
+---------------
+
+Problem Description:
+For Level 2, you will encounter a file named `-` (a dash). The goal is to figure out how to read the file without causing errors due to the special character.
+
+Solution & Explanation:
+If you try to use `cat -` directly, the terminal will interpret the `-` as an option for `cat` rather than as a file name. To resolve this, you can provide the file path using either the `./` or the absolute path.
+
+- First, list the files in the directory to confirm that the file exists:
+
+bandit1@bandit:~$ ls
+
+- Use `cat` with `./` to specify the file:
+
+bandit1@bandit:~$ cat ./- CV1DtqXWVFXTvM2F0k09SHz0YwRINYA9
+
+
+The password for the next level (Level 3) is:
+
+CV1DtqXWVFXTvM2F0k09SHz0YwRINYA9
+
+
+---
+
+Bandit Level 03
+---------------
+
+Problem Description:
+In this level, you need to access a file with spaces in its name. The goal is to figure out how to properly read the file using the `cat` command.
+
+Solution & Explanation:
+When dealing with file names that contain spaces, you need to either escape the spaces with a backslash `\` or enclose the entire file name in quotes.
+
+- First, list the files in the directory to confirm the name of the file:
+
+bandit2@bandit:~$ ls spaces in this filename
+
+
+- To read the file using `cat`, you can either:
+- Escape the spaces with a backslash:
+bandit2@bandit:~$ cat spaces\ in\ this\ filename
+
+- Or, use quotes around the entire file name:
+bandit2@bandit:~$ cat “spaces in this filename”
+
+
+The password for the next level (Level 4) is:
+
+UmHadQclWmgdLOKQ3YNgjWxGoRMb5luK
